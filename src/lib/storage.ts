@@ -2,6 +2,8 @@
  * Local storage helpers for WeatherFlow
  */
 
+import { GeoPoint } from './types';
+
 export function getJSON<T>(key: string): T | null {
   try {
     if (typeof window === 'undefined') return null;
