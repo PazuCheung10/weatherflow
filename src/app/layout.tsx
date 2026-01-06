@@ -4,6 +4,7 @@ import { QueryProvider } from '@/lib/queryClient';
 import { LocaleProvider } from '@/lib/LocaleContext';
 import { ThemeProvider } from '@/lib/ThemeContext';
 import ServiceWorkerProvider from '@/components/ServiceWorkerProvider';
+import SafariDetector from '@/components/SafariDetector';
 import '@/styles/globals.css';
 
 const inter = Inter({ subsets: ['latin'] });
@@ -39,6 +40,19 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
+        {/* Safari Detection - Must run first */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function() {
+                var ua = navigator.userAgent.toLowerCase();
+                if (ua.includes("safari") && !ua.includes("chrome")) {
+                  document.documentElement.classList.add("safari");
+                }
+              })();
+            `,
+          }}
+        />
         {/* Prevent theme flash: set html class before hydration */}
         <script
           dangerouslySetInnerHTML={{
@@ -59,6 +73,7 @@ export default function RootLayout({
         />
       </head>
       <body className={inter.className}>
+        <SafariDetector />
         <ThemeProvider>
           <QueryProvider>
             <LocaleProvider>

@@ -22,7 +22,19 @@ export function ThemeProvider({ children }: ThemeProviderProps) {
 
   useEffect(() => {
     // Determine initial theme: use saved value if valid; otherwise detect system
-    const saved = localStorage.getItem('weatherflow-theme');
+    // Wrap in try/catch for Safari Private Mode
+    let saved: string | null = null;
+    try {
+      saved = localStorage.getItem('weatherflow-theme');
+    } catch {
+      // Safari Private Mode - use system preference
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      const detected: Theme = prefersDark ? 'dark' : 'light';
+      setTheme(detected);
+      setResolvedTheme(detected);
+      return;
+    }
+    
     if (saved === 'light' || saved === 'dark') {
       setTheme(saved);
       setResolvedTheme(saved);
@@ -34,7 +46,11 @@ export function ThemeProvider({ children }: ThemeProviderProps) {
     const detected: Theme = prefersDark ? 'dark' : 'light';
     setTheme(detected);
     setResolvedTheme(detected);
-    localStorage.setItem('weatherflow-theme', detected);
+    try {
+      localStorage.setItem('weatherflow-theme', detected);
+    } catch {
+      // Safari Private Mode - silently fail
+    }
   }, []);
 
   useEffect(() => {
@@ -42,8 +58,12 @@ export function ThemeProvider({ children }: ThemeProviderProps) {
   }, [theme]);
 
   useEffect(() => {
-    // Save theme to localStorage
-    localStorage.setItem('weatherflow-theme', theme);
+    // Save theme to localStorage - wrap in try/catch for Safari Private Mode
+    try {
+      localStorage.setItem('weatherflow-theme', theme);
+    } catch {
+      // Safari Private Mode - silently fail
+    }
   }, [theme]);
 
   useEffect(() => {
