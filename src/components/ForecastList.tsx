@@ -62,6 +62,7 @@ const ForecastList = memo(function ForecastList({ forecasts, units, isLoading = 
         aria-labelledby="forecast-heading"
         aria-label={strings.forecastList}
       >
+        {/* Skip today (index 0) and show next 5 days (indices 1-5) */}
         {forecasts.slice(1, 6).map((forecast, index) => (
           <ForecastItem
             key={forecast.dt}
