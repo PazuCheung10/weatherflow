@@ -166,7 +166,7 @@ export default function Home() {
     setOriginalCurrentWeather(null);
     setOriginalForecast(null);
     if (city.name) {
-      addRecentSearch(city.name);
+      addRecentSearch(city);
     }
   }, []);
 
@@ -185,7 +185,7 @@ export default function Home() {
       
       setSelectedCity(locationCity);
       setSearchQuery(locationCity.name || 'Current Location');
-      addRecentSearch(locationCity.name || 'Current Location');
+      addRecentSearch(locationCity);
     } catch (error) {
       const geoError = error as GeoLocationError;
       setLocationError(getLocationErrorMessage(geoError));
