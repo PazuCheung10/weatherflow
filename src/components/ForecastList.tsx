@@ -62,12 +62,11 @@ const ForecastList = memo(function ForecastList({ forecasts, units, isLoading = 
         aria-labelledby="forecast-heading"
         aria-label={strings.forecastList}
       >
-        {forecasts.slice(0, 5).map((forecast, index) => (
+        {forecasts.slice(1, 6).map((forecast, index) => (
           <ForecastItem
             key={forecast.dt}
             forecast={forecast}
             units={units}
-            isToday={index === 0}
             index={index}
           />
         ))}
