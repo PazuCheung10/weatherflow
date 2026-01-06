@@ -205,9 +205,8 @@ export default function Home() {
       
       setSelectedCity(locationCity);
       setSearchQuery(locationCity.name || 'Current Location');
-      const locationName = locationCity.name || 'Current Location';
-      if (typeof locationName === 'string') {
-        addRecentSearch(locationName);
+      if (locationCity.name) {
+        addRecentSearch(locationCity);
       }
     } catch (error) {
       const geoError = error as GeoLocationError;
