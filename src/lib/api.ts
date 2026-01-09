@@ -129,8 +129,9 @@ async function getCurrentOpenWeather(lat: number, lon: number, units: Units): Pr
 export async function getForecast(lat: number, lon: number, units: Units): Promise<Forecast> {
   if (PROVIDER === 'open-meteo') {
     // free route – no key
-    // Request 6 days to show 5 days excluding today (days 1-5)
-    const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,relative_humidity_2m,wind_speed_10m&daily=weathercode,temperature_2m_max,temperature_2m_min&hourly=temperature_2m&forecast_days=6&timezone=auto&temperature_unit=${units === 'metric' ? 'celsius' : 'fahrenheit'}&wind_speed_unit=${units === 'metric' ? 'kmh' : 'mph'}`;
+    // Request 7 days to ensure we have 6 future days after filtering out today
+    // We'll filter out today on the frontend and show the next 5 days
+    const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,relative_humidity_2m,wind_speed_10m&daily=weathercode,temperature_2m_max,temperature_2m_min&hourly=temperature_2m&forecast_days=7&timezone=auto&temperature_unit=${units === 'metric' ? 'celsius' : 'fahrenheit'}&wind_speed_unit=${units === 'metric' ? 'kmh' : 'mph'}`;
     
     try {
       const response = await fetch(url);

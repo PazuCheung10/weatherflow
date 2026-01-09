@@ -53,6 +53,16 @@ const ForecastList = memo(function ForecastList({ forecasts, units, isLoading = 
     return emptyState;
   }
 
+  // Filter out today and get next 5 days
+  const today = new Date();
+  today.setHours(0, 0, 0, 0); // Reset to start of day for comparison
+  
+  const futureForecasts = forecasts.filter(forecast => {
+    const forecastDate = new Date(forecast.dt * 1000);
+    forecastDate.setHours(0, 0, 0, 0);
+    return forecastDate.getTime() > today.getTime(); // Only future dates
+  }).slice(0, 5); // Take first 5 future days
+
   return (
     <div className="space-y-3">
       <h3 id="forecast-heading" className="text-lg font-semibold text-slate-800 dark:text-slate-200 mb-4">{strings.forecastTitle}</h3>
@@ -62,8 +72,8 @@ const ForecastList = memo(function ForecastList({ forecasts, units, isLoading = 
         aria-labelledby="forecast-heading"
         aria-label={strings.forecastList}
       >
-        {/* Skip today (index 0) and show next 5 days (indices 1-5) */}
-        {forecasts.slice(1, 6).map((forecast, index) => (
+        {/* Filter out today and show next 5 days */}
+        {futureForecasts.map((forecast, index) => (
           <ForecastItem
             key={forecast.dt}
             forecast={forecast}
