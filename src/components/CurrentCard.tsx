@@ -151,12 +151,11 @@ const CurrentCard = memo(function CurrentCard({ weather, location, units, isLoad
           return arr;
         })();
         return (
-          <div className="mt-4 md:mt-6" id="hourly-sparkline">
+          <div className="mt-6 md:mt-8 -mx-4 md:-mx-6 w-[calc(100%+2rem)] md:w-[calc(100%+3rem)]" id="hourly-sparkline">
             <HourlySparkline 
               hourlyData={dataToShow}
               units={units}
               className="w-full"
-              titleText="Hourly prediction"
             />
           </div>
         );
