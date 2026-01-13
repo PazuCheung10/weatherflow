@@ -82,7 +82,9 @@ const CurrentCard = memo(function CurrentCard({ weather, location, units, isLoad
       <div className="flex items-start justify-between gap-4 mb-4">
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-3 flex-wrap">
-            <h2 id="current-weather-title" className="text-xl md:text-2xl xl:text-3xl font-bold text-slate-800 dark:text-slate-100 truncate">{weather.name}</h2>
+            <h2 id="current-weather-title" className="text-xl md:text-2xl xl:text-3xl font-bold text-slate-800 dark:text-slate-100 truncate">
+              {location?.name || (weather.name && !/^-?\d+\.?\d*,\s*-?\d+\.?\d*$/.test(weather.name) ? weather.name : 'Location')}
+            </h2>
             {location && (
               <FavoriteButton 
                 city={location} 
@@ -90,8 +92,8 @@ const CurrentCard = memo(function CurrentCard({ weather, location, units, isLoad
               />
             )}
           </div>
-          <p className="text-slate-600 dark:text-slate-400 text-xs md:text-sm" aria-label={`${strings.lastUpdated} ${formatDate(weather.dt, weather.timezone)}`}>
-            {formatDate(weather.dt, weather.timezone)}
+          <p className="text-slate-600 dark:text-slate-400 text-xs md:text-sm capitalize" aria-label={`${strings.weatherCondition} ${description}`}>
+            {description}
           </p>
         </div>
         <div className="text-right">
